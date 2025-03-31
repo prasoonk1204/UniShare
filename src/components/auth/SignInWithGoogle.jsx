@@ -38,7 +38,11 @@ const SignInWithGoogle = () => {
         if(user.profileCompleted === false) {
           alert("Please complete your profile");
 
+          localStorage.clear();
+          localStorage.setItem("token", token);
+
           window.location.href = "/completeprofile";
+
           return;
         }
 
@@ -47,7 +51,7 @@ const SignInWithGoogle = () => {
           localStorage.setItem("token", token);
 
           alert("Signin successful");
-          window.location.href = "/profile";
+          window.location.href = "/";
         }
 
       });
