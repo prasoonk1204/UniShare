@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router";
 import Auth from "./components/auth/Auth";
 import Profile from "./components/Profile";
-import CompleteProfile from "./components/CompleteProfile";
+import CompleteProfile from "./components/auth/CompleteProfile";
 import Feed from "./components/Feed";
 
 
