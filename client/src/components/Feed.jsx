@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
@@ -17,6 +18,8 @@ const verifyToken = async (token) => {
 };
 
 const Feed = () => {
+  const navigate = useNavigate()
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const isFirstRender = useRef(true);
@@ -25,7 +28,7 @@ const Feed = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       console.log("No token");
-      window.location.href = "/signin";
+      navigate("/signin");
       return;
     }
 
@@ -41,7 +44,7 @@ const Feed = () => {
           localStorage.clear();
           localStorage.setItem("token", token);
 
-          window.location.href = "/completeprofile";
+          navigate("/completeprofile");
           return;
         }
 
@@ -49,7 +52,7 @@ const Feed = () => {
       } else {
         console.log("User not found");
         localStorage.removeItem("token");
-        window.location.href = "/signin";
+        navigate("/signin");
       }
       setLoading(false);
     });

@@ -2,10 +2,13 @@ import { useState } from "react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./Firebase";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
 const SignInWithGoogle = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
 
   const googleLogin = () => {
@@ -41,7 +44,7 @@ const SignInWithGoogle = () => {
           localStorage.clear();
           localStorage.setItem("token", token);
 
-          window.location.href = "/completeprofile";
+          navigate("/completeprofile");
 
           return;
         }
@@ -51,7 +54,7 @@ const SignInWithGoogle = () => {
           localStorage.setItem("token", token);
 
           alert("Signin successful");
-          window.location.href = "/";
+          navigate("/");
         }
 
       });
