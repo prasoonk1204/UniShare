@@ -6,20 +6,13 @@ const JWT_SECRET = process.env.JWT_SECRET
 const userAuth = async (req, res, next) => {
   try {
     let token = req.body.token || req.headers.authorization?.split(" ")[1];
-
-    console.log("BACKEND token:"+ token);
     
     if (!token) {
       throw new Error("Token not found");
     }
 
     const decodedObj = jwt.verify(token, JWT_SECRET);
-
-    console.log("Decoded Object: " + decodedObj);
-
     const { userId } = decodedObj;
-
-    console.log("userrr id: " + userId);
 
     const user = await User.findOne( {userId} );
 

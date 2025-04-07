@@ -18,8 +18,10 @@ app.use(
 app.use(express.json());
 
 import authRouter from "./routes/auth.js";
+import regRouter from "./routes/registration.js";
 
 app.use("/", authRouter)
+app.use("/", regRouter)
 
 connectDB()
   .then(() => {

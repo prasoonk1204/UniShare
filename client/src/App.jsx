@@ -20,8 +20,8 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Feed />}/>
           <Route path="/signin" element={<Auth />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/completeprofile" element={<CompleteProfile />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>

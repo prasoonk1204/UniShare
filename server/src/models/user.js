@@ -35,19 +35,22 @@ const userSchema = new mongoose.Schema(
     },
     graduationYear: {
       type: String,
-      enum: {
-        values: [
-          "2025",
-          "2026",
-          "2027",
-          "2028",
-          "2029",
-          "2030",
-          "2031",
-          "2032",
-        ],
-        message: `{VALUE} is not valid`,
+      validate: {
+        validator: function (value) {
+          const currentYear = new Date().getFullYear();
+          const allowedYears = Array.from({ length: 5 }, (_, i) =>
+            (currentYear + i).toString()
+          );
+          return allowedYears.includes(value);
+        },
+        message: (props) => `${props.value} is not a valid graduation year`,
       },
+    },
+    photoUrl: {
+      type: String,
+    },
+    idDocUrl: {
+      type: String,
     },
   },
   {

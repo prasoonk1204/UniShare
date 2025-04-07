@@ -61,13 +61,7 @@ const SignInWithGoogle = () => {
     }
   };
 
-  return user ? (
-    <div>
-      <img src={user.image} alt="" />
-      <h1>Name : {user.name}</h1>
-      <h2>Email : {user.email}</h2>
-    </div>
-  ) : (
+  return (
     <div>
       <button onClick={googleLogin} className="cursor-pointer">
         <img src="signin-button.png" alt="" className="w-60" />

@@ -14,6 +14,8 @@ function jwtTokenCreate(user) {
   return token;
 }
 
+// handles signin
+
 authRouter.post("/signin", async (req, res) => {
   try {
     const { userId, name, email, image } = req.body;
@@ -51,13 +53,12 @@ authRouter.post("/signin", async (req, res) => {
   }
 });
 
+
 authRouter.post("/verifytoken", userAuth, async (req, res) => {
   try {
-
     const user = req.user;
 
     console.log(user);
-    
     res.status(200).send(user);
 
   } catch (err) {

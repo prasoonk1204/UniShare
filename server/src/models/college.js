@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const collegeSchema = new mongoose.Schema({
-  collegeName: {
+  name: {
     type: String,
     required: true,
     unique: true,
