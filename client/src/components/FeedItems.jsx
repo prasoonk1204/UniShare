@@ -1,66 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const FeedItems = () => {
-  const feedItems = [
-    {
-      id: 1,
-      name: "Feed Item 1",
-      author: "Author 1",
-      pic: "/item.jpg",
-      tags: ["tag1", "tag2"],
-    },
-    {
-      id: 2,
-      name: "Feed Item 2",
-      author: "Author 2",
-      pic: "/item.jpg",
-      tags: ["tag1", "tag2"],
-    },
-    {
-      id: 3,
-      name: "Feed Item 3",
-      author: "Author 3",
-      pic: "/item.jpg",
-      tags: ["tag1", "tag2"],
-    },
-    {
-      id: 4,
-      name: "Feed Item 3",
-      author: "Author 3",
-      pic: "/item.jpg",
-      tags: ["tag1", "tag2"],
-    },
-    // Add more items as needed
-  ];
+  const [feedItems, setFeedItems] = useState([]);
 
-  return { feedItems } ? <div className="flex flex-col gap-4 w-full md:pl-4 ">
-    {feedItems.map((item) => {
-      return (
-        <div className="flex w-full bg-black/5 h-35 relative rounded-lg border-1 border-black/50">
-          <div className="h-full">
-            <img src={item.pic} alt="" className="h-full w-55 object-cover rounded-bl-lg rounded-tl-lg" />
-          </div>
-          <div className="px-2 py-4 flex flex-col justify-between w-full">
-            <div>
-              <h1 className="font-semibold text-lg">{item.name}</h1>
-              <h2>{item.author}</h2>
+  useEffect(() => {
+    const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    setFeedItems(storedPosts);
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full md:pl-4">
+      {feedItems.length > 0 ? (
+        feedItems.map((item) => (
+          <div
+            key={item.id}
+            className="flex flex-col w-full bg-black/5 relative rounded-lg border border-black/20"
+          >
+            <div className="h-full">
+              <img
+                src={
+                  item.photoName ? `/uploads/${item.photoName}` : "/item.jpg"
+                }
+                alt={item.itemName}
+                className="h-50 w-full object-cover rounded-t-lg"
+              />
             </div>
 
-            <div className="flex gap-2 flex-wrap">
-              {item.tags.map((tag, index) => (
-                <span key={index} className="bg-black/10 p-1 rounded-md text-xs">
-                  {tag}
-                </span>
-              ))}
+            <div className="p-4 flex flex-col justify-between w-full">
+              <div>
+                <h1 className="font-semibold text-xl">{item.itemName}</h1>
+                <h2 className="text-gray-600 text-sm overflow-hidden mb-2">
+                  By:{item.userName}
+                </h2>
+              </div>
+
+              <div className="flex gap-2 flex-wrap mb-4">
+                {item.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="bg-black/10 px-2 py-1 rounded-md text-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <button className=" text-white bg-blue-400 px-6 py-2 text-lg rounded-lg cursor-pointer hover:bg-blue-500 transition-all duration-300 md:self-end">
+                Request
+              </button>
             </div>
           </div>
-          <button className="absolute right-4 top-4 text-white bg-blue-400 px-3 py-1 text-sm rounded-lg cursor-pointer hover:bg-blue-500 transition-all duration-300">
-            Request
-          </button>
+        ))
+      ) : (
+        <div className="col-span-2 text-center text-gray-600">
+          No posts available.
         </div>
-      );
-    })}
-  </div> : <div>UFaigef</div>;
+      )}
+    </div>
+  );
 };
 
 export default FeedItems;

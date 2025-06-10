@@ -5,7 +5,7 @@ import FeedItems from '../components/FeedItems'
 
 const Feed = () => {
   return (
-    <div className="flex w-full flex-col md:flex-row ">
+    <div className="flex w-full flex-col md:flex-row">
       <Sidebar />
       <div className="md:w-[26vw] md:h-full"></div>
       <FeedItems />

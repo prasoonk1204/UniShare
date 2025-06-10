@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Feed from "./pages/Feed";
 import Requests from "./pages/Requests";
 import MyPosts from "./pages/MyPosts";
+import Post from "./components/Post";
 
 const AppLayout = () => {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/requests" element={<Requests />} />
             <Route path="/myposts" element={<MyPosts />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/post" element={<Post />} />
           </Route>
           <Route path="/signin" element={<Auth />} />
           <Route path="/completeprofile" element={<CompleteProfile />} />

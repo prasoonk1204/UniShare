@@ -72,10 +72,15 @@ const Home = () => {
   return (
     <div className="px-4 sm:px-10 md:px-20 bg-white pb-4 relative">
       <Navbar />
-      <div className="h-18"></div>
+      <div className="h-20"></div>
       <Outlet />
       {showButton ? (
-        <button className="fixed bg-emerald-500 bottom-10 right-10 md:right-20 z-10 px-6 py-2 rounded-xl hover:scale-110 transition-all duration-200 text-lg shadow-lg text-white">
+        <button
+          className="fixed bg-emerald-500 bottom-10 right-10 md:left-20 z-10 px-6 py-3 rounded-xl hover:scale-105 transition-all duration-200 text-lg shadow-lg text-white w-[19vw] min-w-fit"
+          onClick={() => {
+            navigate("/post");
+          }}
+        >
           Post+
         </button>
       ) : null}
