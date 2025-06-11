@@ -23,13 +23,13 @@ postRouter.post("/new", upload, userAuth, async (req, res) => {
     }
 
     const photoFile = req.files.photo[0];
-    const photoUpload = await Promise.all([
+    const [photoUpload] = await Promise.all([
       imagekit.upload({
         file: photoFile.buffer.toString("base64"),
         fileName: `${user.userId}-${createdAt}`,
       }),
     ]);
-
+    
     const photoUrl = photoUpload.url;
 
     const post = new Post({
@@ -48,5 +48,15 @@ postRouter.post("/new", upload, userAuth, async (req, res) => {
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 });
+
+
+postRouter.get("/all", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch posts" });
+  }
+}); 
 
 export default postRouter;
