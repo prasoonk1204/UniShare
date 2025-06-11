@@ -41,7 +41,7 @@ const Home = () => {
 
     verifyToken(token).then((res) => {
       if (res) {
-        console.log(res);
+        console.log("HOME TOKEN VERIFY",res);
 
         if (res.profileCompleted === false && isFirstRender.current) {
           isFirstRender.current = false;
@@ -54,8 +54,10 @@ const Home = () => {
           navigate("/completeprofile");
           return;
         }
-
+        
         setUser(res);
+        localStorage.setItem("userName", res.name);
+        localStorage.setItem("userId", res.userId)
       } else {
         console.log("User not found");
         localStorage.removeItem("token");

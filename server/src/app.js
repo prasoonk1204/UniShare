@@ -19,9 +19,11 @@ app.use(express.json());
 
 import authRouter from "./routes/auth.js";
 import regRouter from "./routes/registration.js";
+import postRouter from "./routes/post.js";
 
-app.use("/", authRouter)
-app.use("/", regRouter)
+app.use("/", authRouter);
+app.use("/", regRouter);
+app.use("/post", postRouter);
 
 connectDB()
   .then(() => {

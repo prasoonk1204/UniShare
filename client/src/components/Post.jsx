@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
 const Post = () => {
+
   const navigate = useNavigate()
 
   const [photo, setPhoto] = useState(null);
@@ -20,35 +24,48 @@ const Post = () => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
-    const userName = token || "anonymous";
+    if (
+      !itemName ||
+      !tags ||
+      !photo 
+    ) {
+      return alert("Please fill all fields and upload photo");
+    }
 
-    const newPost = {
-      id: Date.now(), // simulate unique id
-      userName,
-      itemName,
-      photoName: photo ? photo.name : null,
-      tags,
-      createdAt: new Date().toISOString(),
-    };
+    try{
+      const token = localStorage.getItem("token");
 
-    const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
+      const newPost = {
+        itemName,
+        photo,
+        tags,
+        createdAt: new Date().toISOString(),
+      };
 
-    const updatedPosts = [newPost, ...existingPosts];
+      await axios.post(`${BACKEND_URL}/post/new`, newPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+      setItemName("");
+      setPhoto(null);
+      setTags([]);
+      setTagInput("");
 
-    console.log("Saved post:", newPost);
+      window.alert("Posted successfully");
 
-    setItemName("");
-    setPhoto(null);
-    setTags([]);
-    setTagInput("");
+      navigate("/");
+    }catch(err){
+      console.error(err);
+      alert(err.response?.data?.error || "Submission failed.");
+    }
 
-    navigate("/");
+    
   };
 
   return (
