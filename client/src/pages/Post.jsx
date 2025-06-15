@@ -1,51 +1,49 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import Select from "react-select";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
 const Post = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [photo, setPhoto] = useState(null);
   const [itemName, setItemName] = useState("");
   const [tags, setTags] = useState([]);
-  const [tagInput, setTagInput] = useState("");
 
-  const handleAddTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput("");
-    }
-  };
+  const predefinedTags = [
+    "Book",
+    "Stationery",
+    "Calculator",
+    "Electronics",
+    "Kit",
+    "Notes",
+    "Question paper",
+  ];
 
-  const handleRemoveTag = (index) => {
-    setTags(tags.filter((_, i) => i !== index));
-  };
+  const tagOptions = predefinedTags.map((tag) => ({ label: tag, value: tag }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !itemName ||
-      !tags ||
-      !photo 
-    ) {
+    if (!itemName || !tags.length || !photo) {
       return alert("Please fill all fields and upload photo");
     }
 
-    try{
+    try {
       const token = localStorage.getItem("token");
 
-      const newPost = {
-        itemName,
-        photo,
-        tags,
-        createdAt: new Date().toISOString(),
-      };
+      const formData = new FormData();
+      formData.append("itemName", itemName);
+      formData.append("photo", photo);
+      formData.append(
+        "tags",
+        JSON.stringify(tags.map((tag) => tag.value))
+      );
+      formData.append("createdAt", new Date().toISOString());
 
-      await axios.post(`${BACKEND_URL}/post/new`, newPost, {
+      await axios.post(`${BACKEND_URL}/post/new`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -55,17 +53,13 @@ const Post = () => {
       setItemName("");
       setPhoto(null);
       setTags([]);
-      setTagInput("");
 
       window.alert("Posted successfully");
-
       navigate("/");
-    }catch(err){
+    } catch (err) {
       console.error(err);
       alert(err.response?.data?.error || "Submission failed.");
     }
-
-    
   };
 
   return (
@@ -98,38 +92,15 @@ const Post = () => {
 
       <div>
         <label className="block text-gray-700 font-medium">Tags</label>
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            placeholder="Add a tag"
-            className="flex-grow p-2 border border-gray-300 rounded-lg"
-          />
-          <button
-            type="button"
-            onClick={handleAddTag}
-            className="px-4 py-2 bg-emerald-500 text-white rounded-lg"
-          >
-            Add
-          </button>
-        </div>
-        <div className="flex flex-wrap mt-2 gap-2">
-          {tags.map((tag, i) => (
-            <span
-              key={i}
-              className="bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full text-sm flex items-center"
-            >
-              {tag}
-              <button
-                onClick={() => handleRemoveTag(i)}
-                className="ml-2 text-red-500 hover:text-red-700 text-xl"
-              >
-                &times;
-              </button>
-            </span>
-          ))}
-        </div>
+        <Select
+          isMulti
+          options={tagOptions}
+          value={tags}
+          onChange={(selected) => setTags(selected)}
+          className="react-select-container mt-1"
+          classNamePrefix="react-select"
+          placeholder="Select tags..."
+        />
       </div>
 
       <div className="text-right">

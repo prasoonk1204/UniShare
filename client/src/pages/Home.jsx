@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Outlet, useNavigate, useLocation } from "react-router";
 import Navbar from "../components/Navbar";
+import NotApproved from "./NotApproved";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5555";
 
@@ -41,23 +42,25 @@ const Home = () => {
 
     verifyToken(token).then((res) => {
       if (res) {
-        console.log("HOME TOKEN VERIFY",res);
+        console.log("HOME TOKEN VERIFY", res);
 
-        if (res.profileCompleted === false && isFirstRender.current) {
+        if (!res.profileCompleted && isFirstRender.current) {
           isFirstRender.current = false;
-
           alert("Please complete your profile");
-
           localStorage.clear();
           localStorage.setItem("token", token);
-
           navigate("/completeprofile");
           return;
         }
-        
+
+        if (!res.approved) {
+          alert("Your profile is not approved by admin yet.");
+          navigate("/notapproved");
+        }
+
         setUser(res);
         localStorage.setItem("userName", res.name);
-        localStorage.setItem("userId", res.userId)
+        localStorage.setItem("userId", res.userId);
       } else {
         console.log("User not found");
         localStorage.removeItem("token");
@@ -70,6 +73,15 @@ const Home = () => {
   if (loading) return <h1>Loading...</h1>;
 
   if (!user) return null;
+
+  if (user && !user.approved && path !== "/profile") {
+    return (
+      <div className="px-4 sm:px-10 md:px-20 bg-white pb-4 h-screen">
+        <Navbar />
+        <NotApproved />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 sm:px-10 md:px-20 bg-white pb-4 relative">

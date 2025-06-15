@@ -6,7 +6,8 @@ import Home from "./pages/Home";
 import Feed from "./pages/Feed";
 import Requests from "./pages/Requests";
 import MyPosts from "./pages/MyPosts";
-import Post from "./components/Post";
+import Post from "./pages/Post";
+import NotApproved from "./pages/NotApproved";
 
 const AppLayout = () => {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/myposts" element={<MyPosts />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/post" element={<Post />} />
+            <Route path="/notapproved" element={<NotApproved />} />
           </Route>
           <Route path="/signin" element={<Auth />} />
           <Route path="/completeprofile" element={<CompleteProfile />} />
