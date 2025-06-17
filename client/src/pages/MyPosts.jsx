@@ -1,9 +1,21 @@
-import React from 'react'
+import { useState } from "react";
+import Sidebar from "../components/Sidebar";
+import MyPostItems from "../components/MyPostItems";
 
 const MyPosts = () => {
-  return (
-    <div>MyPosts</div>
-  )
-}
+  const [filters, setFilters] = useState({ search: "", tags: [] });
 
-export default MyPosts
+  const handleFilter = (search, tags) => {
+    setFilters({ search, tags });
+  };
+
+  return (
+    <div className="flex w-full flex-col md:flex-row">
+      <Sidebar onFilter={handleFilter} />
+      <div className="md:w-[26vw] md:h-full"></div>
+      <MyPostItems filters={filters} />
+    </div>
+  );
+};
+
+export default MyPosts;

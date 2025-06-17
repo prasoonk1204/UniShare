@@ -66,8 +66,13 @@ const SignInWithGoogle = () => {
 
   return (
     <div>
-      <button onClick={googleLogin} className="cursor-pointer">
-        <img src="signin-button.png" alt="" className="w-60" />
+      <button onClick={googleLogin} className="cursor-pointer bg-neutral-200 flex items-center gap-4 px-8 py-4 rounded-xl hover:bg-neutral-300/80 transition-all duration-300 hover:-translate-y-1 text-neutral-600">
+        <img
+          src="https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-google-icon-logo-png-transparent-svg-vector-bie-supply-14.png"
+          alt=""
+          className="w-6"
+        />
+        <h1 className="font-semibold text-xl">Sign in with Google</h1>
       </button>
     </div>
   );
